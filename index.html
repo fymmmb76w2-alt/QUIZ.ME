@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<main id="app">
+
+  <section id="landing" class="screen active">
+    <h1>Quiz</h1>
+    <p class="muted">Upload an XML file containing questions and answers.</p>
+    <div class="row">
+      <label for="xmlInput" class="btn">Upload XML</label>
+      <input id="xmlInput" type="file" accept=".xml,text/xml,application/xml" hidden>
+      <a id="sampleLink" class="btn secondary" href="sample.xml" download="sample.xml">Download sample XML</a>
+    </div>
+    <p id="loadError" class="error" hidden></p>
+    <details>
+      <summary>XML format</summary>
+<pre><code>&lt;quiz&gt;
+  &lt;question text="Question text"&gt;
+    &lt;answer correct="true"&gt;Correct answer&lt;/answer&gt;
+    &lt;answer correct="false"&gt;Wrong answer&lt;/answer&gt;
+  &lt;/question&gt;
+&lt;/quiz&gt;</code></pre>
+      <p class="muted">One or more answers may be marked correct="true". Feed the sample plus your questions to an LLM and ask it to produce a valid file in the same structure.</p>
+    </details>
+  </section>
+
+  <section id="quiz" class="screen">
+    <header class="quiz-header">
+      <span id="progress" class="muted"></span>
+      <span id="timer" class="muted">00:00</span>
+    </header>
+    <h2 id="questionText"></h2>
+    <div id="answers" class="answers"></div>
+    <div class="row">
+      <button id="actionBtn" class="btn" data-mode="check">Check</button>
+    </div>
+    <p id="feedback" class="feedback" hidden></p>
+  </section>
+
+  <section id="results" class="screen">
+    <h1>Done</h1>
+    <p>Time elapsed: <span id="elapsed"></span></p>
+    <p>First-time success rate: <span id="rate"></span></p>
+    <div class="row">
+      <button id="repeatBtn" class="btn">Repeat this quiz</button>
+      <label for="xmlInput2" class="btn secondary">Upload another XML</label>
+      <input id="xmlInput2" type="file" accept=".xml,text/xml,application/xml" hidden>
+    </div>
+  </section>
+
+</main>
+<script src="app.js"></script>
+</body>
+</html>
