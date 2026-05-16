@@ -1,4 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+INSTRUCTIONS FOR LLM:
+Produce a valid XML file in this exact structure. Each <question> has a text
+attribute and 2-6 <answer> elements with correct="true" or correct="false".
+At least one answer must be correct; multiple answers may be marked correct.
+Escape the characters &, <, >, ", and ' inside attribute values and text
+(&amp; &lt; &gt; &quot; &apos;). Output only XML, no commentary.
+The questions and answers to encode follow below this file.
+-->
 <quiz>
   <question text="Which of the following are programming languages?">
     <answer correct="true">Python</answer>
