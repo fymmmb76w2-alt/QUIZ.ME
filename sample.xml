@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question text="Which of the following are programming languages?">
+    <answer correct="true">Python</answer>
+    <answer correct="true">JavaScript</answer>
+    <answer correct="false">HTML</answer>
+    <answer correct="false">HTTP</answer>
+  </question>
+  <question text="What does SAP FI stand for?">
+    <answer correct="true">Financial Accounting</answer>
+    <answer correct="false">Financial Integration</answer>
+    <answer correct="false">Fiscal Inventory</answer>
+    <answer correct="false">Forecast Index</answer>
+  </question>
+  <question text="Which European countries use the euro as their official currency?">
+    <answer correct="true">Germany</answer>
+    <answer correct="true">Spain</answer>
+    <answer correct="false">Czech Republic</answer>
+    <answer correct="false">Poland</answer>
+  </question>
+  <question text="What is 7 multiplied by 8?">
+    <answer correct="true">56</answer>
+    <answer correct="false">54</answer>
+    <answer correct="false">63</answer>
+    <answer correct="false">48</answer>
+  </question>
+</quiz>
