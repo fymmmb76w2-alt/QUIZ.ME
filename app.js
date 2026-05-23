@@ -176,14 +176,13 @@
     const correctIds = new Set(q.answers.filter(a => a.correct).map(a => a.id));
     const selected = state.selected;
 
+        // Prevent submitting with no selection when there are correct answers
+    if (selected.size === 0 && correctIds.size > 0) return;
+
     const isCorrect =
       selected.size === correctIds.size &&
       [...selected].every(id => correctIds.has(id));
     
-    const correctIds = new Set(q.answers.filter(a => a.correct).map(a => a.id));
-const hasCorrectAnswers = correctIds.size > 0;
-if (state.selected.size === 0 && hasCorrectAnswers) return;
-
 
     // Record first-attempt result once per question id
     if (!state.seenFirstAttempt.has(q.id)) {
