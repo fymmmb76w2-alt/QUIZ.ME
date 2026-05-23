@@ -74,10 +74,6 @@
         correct: (a.getAttribute('correct') || '').trim().toLowerCase() === 'true',
       }));
 
-      if (!answers.some(a => a.correct)) {
-        throw new Error(`Question ${i + 1} has no correct answer.`);
-      }
-
       return { id: `q${i}`, text, answers };
     });
 
