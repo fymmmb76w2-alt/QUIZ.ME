@@ -171,15 +171,19 @@
 
   function checkAnswer() {
     if (state.locked) return;
-    if (state.selected.size === 0) return;
 
-    const q = state.current;
+     const q = state.current;
     const correctIds = new Set(q.answers.filter(a => a.correct).map(a => a.id));
     const selected = state.selected;
 
     const isCorrect =
       selected.size === correctIds.size &&
       [...selected].every(id => correctIds.has(id));
+    
+    const correctIds = new Set(q.answers.filter(a => a.correct).map(a => a.id));
+const hasCorrectAnswers = correctIds.size > 0;
+if (state.selected.size === 0 && hasCorrectAnswers) return;
+
 
     // Record first-attempt result once per question id
     if (!state.seenFirstAttempt.has(q.id)) {
