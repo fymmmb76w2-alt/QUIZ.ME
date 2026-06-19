@@ -195,3 +195,69 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
 }
 .feedback.ok { border-color: var(--correct-bg); }
 .feedback.bad { border-color: var(--wrong-bg); }
+
+/* Flashcard mode */
+.flashcard {
+  margin: 8px 0;
+}
+
+.flashcard-input {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--fg);
+  font: inherit;
+  border-radius: 0;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+.flashcard-input:focus {
+  border-color: var(--fg);
+}
+
+.flashcard-input.locked {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.flashcard-comparison {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.flashcard-block {
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.flashcard-block.correct {
+  border-color: var(--correct-bg);
+  background: var(--correct-bg);
+  color: var(--correct-fg);
+}
+
+.flashcard-label {
+  display: block;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  opacity: 0.7;
+  margin-bottom: 4px;
+}
+
+.flashcard-value {
+  display: block;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+@media (max-width: 480px) {
+  .flashcard-comparison {
+    grid-template-columns: 1fr;
+  }
+}

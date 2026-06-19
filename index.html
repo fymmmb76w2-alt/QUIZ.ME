@@ -21,12 +21,18 @@
     <details>
       <summary>XML format</summary>
 <pre><code>&lt;quiz&gt;
+  &lt;!-- Multiple-choice (2+ answers) --&gt;
   &lt;question text="Question text"&gt;
     &lt;answer correct="true"&gt;Correct answer&lt;/answer&gt;
     &lt;answer correct="false"&gt;Wrong answer&lt;/answer&gt;
   &lt;/question&gt;
+
+  &lt;!-- Flashcard (1 answer — type and compare) --&gt;
+  &lt;question text="What is the capital of France?"&gt;
+    &lt;answer correct="true"&gt;Paris&lt;/answer&gt;
+  &lt;/question&gt;
 &lt;/quiz&gt;</code></pre>
-      <p class="muted">One or more answers may be marked correct="true". Feed the sample plus your questions to an LLM and ask it to produce a valid file in the same structure.</p>
+      <p class="muted">Questions with 2+ answers are multiple-choice. Questions with exactly 1 answer appear as flashcards — you type your answer and compare it to the correct one. Feed the sample plus your questions to an LLM and ask it to produce a valid file in the same structure.</p>
     </details>
   </section>
 

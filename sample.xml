@@ -2,8 +2,13 @@
 <!--
 INSTRUCTIONS FOR LLM:
 Produce a valid XML file in this exact structure. Each <question> has a text
-attribute and 2-6 <answer> elements with correct="true" or correct="false".
-At least one answer must be correct; multiple answers may be marked correct.
+attribute and one or more <answer> elements with correct="true" or correct="false".
+
+- MULTIPLE-CHOICE: 2-6 <answer> elements. At least one must be correct="true";
+  multiple answers may be marked correct.
+- FLASHCARD: Exactly 1 <answer correct="true"> element. The quiz app will show
+  a text input for the user to type their answer and then reveal the correct one.
+
 Escape the characters &, <, >, ", and ' inside attribute values and text
 (&amp; &lt; &gt; &quot; &apos;). Output only XML, no commentary.
 The questions and answers to encode follow below this file.
@@ -32,5 +37,13 @@ The questions and answers to encode follow below this file.
     <answer correct="false">54</answer>
     <answer correct="false">63</answer>
     <answer correct="false">48</answer>
+  </question>
+
+  <!-- Flashcard questions (single answer — type and compare) -->
+  <question text="What is the capital of Japan?">
+    <answer correct="true">Tokyo</answer>
+  </question>
+  <question text="In what year did the Berlin Wall fall?">
+    <answer correct="true">1989</answer>
   </question>
 </quiz>

@@ -33,6 +33,7 @@
     firstAttemptCorrect: 0,
     seenFirstAttempt: new Set(), // ids of questions whose first attempt has been recorded
     lastQuestions: null, // original parsed questions for replay
+    isFlashcard: false,  // true when current question is flashcard mode
   };
 
   function show(name) {
@@ -66,7 +67,7 @@
       if (!text) throw new Error(`Question ${i + 1} has no text.`);
 
       const aNodes = Array.from(q.getElementsByTagName('answer'));
-      if (aNodes.length < 2) throw new Error(`Question ${i + 1} needs at least 2 answers.`);
+      if (aNodes.length === 0) throw new Error(`Question ${i + 1} needs at least 1 answer.`);
 
       const answers = aNodes.map((a, j) => ({
         id: `${i}_${j}`,
@@ -140,11 +141,20 @@
     els.progress.textContent = `Question ${done + 1} — ${remaining} left`;
 
     els.questionText.textContent = state.current.text;
-    renderAnswers(state.current);
+
+    // Flashcard mode: exactly 1 answer
+    if (state.current.answers.length === 1) {
+      state.isFlashcard = true;
+      renderFlashcard(state.current);
+    } else {
+      state.isFlashcard = false;
+      renderAnswers(state.current);
+    }
   }
 
   function renderAnswers(q) {
     els.answers.innerHTML = '';
+    els.answers.classList.remove('flashcard-mode');
     const shuffled = shuffle(q.answers);
     shuffled.forEach(a => {
       const btn = document.createElement('button');
@@ -156,6 +166,87 @@
       btn.addEventListener('click', () => toggleAnswer(btn, a.id));
       els.answers.appendChild(btn);
     });
+  }
+
+  function renderFlashcard(q) {
+    els.answers.innerHTML = '';
+    els.answers.classList.add('flashcard-mode');
+
+    const card = document.createElement('div');
+    card.className = 'flashcard';
+
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.className = 'flashcard-input';
+    input.id = 'flashcardInput';
+    input.placeholder = 'Type your answer…';
+    input.autocomplete = 'off';
+    input.spellcheck = false;
+
+    card.appendChild(input);
+    els.answers.appendChild(card);
+
+    // Focus the input
+    requestAnimationFrame(() => input.focus());
+  }
+
+  function checkFlashcard() {
+    if (state.locked) return;
+    const q = state.current;
+    const input = document.getElementById('flashcardInput');
+    const userAnswer = (input ? input.value : '').trim();
+
+    state.locked = true;
+    if (input) {
+      input.disabled = true;
+      input.classList.add('locked');
+    }
+
+    const correctAnswer = q.answers[0].text;
+
+    // Build comparison display
+    const comparison = document.createElement('div');
+    comparison.className = 'flashcard-comparison';
+
+    const yourBlock = document.createElement('div');
+    yourBlock.className = 'flashcard-block yours';
+    yourBlock.innerHTML = `<span class="flashcard-label">Your answer</span><span class="flashcard-value">${escapeHtml(userAnswer || '(empty)')}</span>`;
+
+    const correctBlock = document.createElement('div');
+    correctBlock.className = 'flashcard-block correct';
+    correctBlock.innerHTML = `<span class="flashcard-label">Correct answer</span><span class="flashcard-value">${escapeHtml(correctAnswer)}</span>`;
+
+    comparison.appendChild(yourBlock);
+    comparison.appendChild(correctBlock);
+    els.answers.appendChild(comparison);
+
+    // Record first-attempt: flashcard is always "seen" (user self-evaluates)
+    if (!state.seenFirstAttempt.has(q.id)) {
+      state.seenFirstAttempt.add(q.id);
+      // For flashcard: auto-match (case-insensitive trim)
+      if (userAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
+        state.firstAttemptCorrect += 1;
+      }
+    }
+
+    // Always move forward (no re-queue for flashcards — user self-evaluates)
+    state.queue.shift();
+    setAction(state.queue.length === 0 ? 'finish' : 'next');
+
+    els.feedback.hidden = false;
+    if (userAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
+      els.feedback.textContent = 'Correct. Moving on.';
+      els.feedback.classList.add('ok');
+    } else {
+      els.feedback.textContent = 'Compare your answer above.';
+      els.feedback.classList.add('bad');
+    }
+  }
+
+  function escapeHtml(str) {
+    const d = document.createElement('div');
+    d.textContent = str;
+    return d.innerHTML;
   }
 
   function toggleAnswer(btn, id) {
@@ -170,6 +261,8 @@
   }
 
   function checkAnswer() {
+    // Delegate to flashcard handler when in flashcard mode
+    if (state.isFlashcard) return checkFlashcard();
     if (state.locked) return;
 
      const q = state.current;
@@ -260,9 +353,13 @@
 
   function setAction(mode) {
     els.actionBtn.dataset.mode = mode;
-    if (mode === 'check') els.actionBtn.textContent = 'Check';
-    else if (mode === 'next') els.actionBtn.textContent = 'Next';
-    else if (mode === 'finish') els.actionBtn.textContent = 'Finish';
+    if (mode === 'check') {
+      els.actionBtn.textContent = state.isFlashcard ? 'Submit' : 'Check';
+    } else if (mode === 'next') {
+      els.actionBtn.textContent = 'Next';
+    } else if (mode === 'finish') {
+      els.actionBtn.textContent = 'Finish';
+    }
   }
 
   function handleAction() {
