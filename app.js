@@ -175,13 +175,27 @@
     const card = document.createElement('div');
     card.className = 'flashcard';
 
-    const input = document.createElement('input');
-    input.type = 'text';
+    const input = document.createElement('textarea');
     input.className = 'flashcard-input';
     input.id = 'flashcardInput';
     input.placeholder = 'Type your answer…';
     input.autocomplete = 'off';
     input.spellcheck = false;
+    input.rows = 1;
+
+    // Auto-expand as the user types
+    input.addEventListener('input', () => {
+      input.style.height = 'auto';
+      input.style.height = input.scrollHeight + 'px';
+    });
+
+    // Enter submits, Shift+Enter adds a newline
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        handleAction();
+      }
+    });
 
     card.appendChild(input);
     els.answers.appendChild(card);

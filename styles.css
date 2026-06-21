@@ -210,6 +210,10 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
   font: inherit;
   border-radius: 0;
   outline: none;
+  resize: none;
+  overflow: hidden;
+  min-height: 48px;
+  line-height: 1.5;
   transition: border-color 0.15s ease;
 }
 
