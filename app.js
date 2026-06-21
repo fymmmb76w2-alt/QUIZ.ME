@@ -215,8 +215,7 @@
 
     state.locked = true;
     if (input) {
-      input.disabled = true;
-      input.classList.add('locked');
+      input.parentElement.remove();
     }
 
     const correctAnswer = q.answers[0].text;
