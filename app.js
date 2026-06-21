@@ -181,13 +181,13 @@
     input.placeholder = 'Type your answer…';
     input.autocomplete = 'off';
     input.spellcheck = false;
-    input.rows = 1;
 
-    // Auto-expand as the user types
-    input.addEventListener('input', () => {
-      input.style.height = 'auto';
-      input.style.height = input.scrollHeight + 'px';
-    });
+    function autoResize() {
+      input.style.height = '0';
+      input.style.height = Math.max(input.scrollHeight, 52) + 'px';
+    }
+
+    input.addEventListener('input', autoResize);
 
     // Enter submits, Shift+Enter adds a newline
     input.addEventListener('keydown', (e) => {
@@ -200,8 +200,11 @@
     card.appendChild(input);
     els.answers.appendChild(card);
 
-    // Focus the input
-    requestAnimationFrame(() => input.focus());
+    // Set initial size and focus
+    requestAnimationFrame(() => {
+      autoResize();
+      input.focus();
+    });
   }
 
   function checkFlashcard() {
@@ -392,6 +395,8 @@
   document.addEventListener('keydown', e => {
     if (e.key !== 'Enter') return;
     if (!screens.quiz.classList.contains('active')) return;
+    // Let the flashcard textarea handle its own Enter key
+    if (document.activeElement && document.activeElement.id === 'flashcardInput') return;
     handleAction();
   });
 })();

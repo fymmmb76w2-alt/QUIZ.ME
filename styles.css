@@ -202,6 +202,7 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
 }
 
 .flashcard-input {
+  display: block;
   width: 100%;
   padding: 14px 16px;
   border: 1px solid var(--border);
@@ -211,9 +212,10 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
   border-radius: 0;
   outline: none;
   resize: none;
-  overflow: hidden;
-  min-height: 48px;
+  overflow-y: hidden;
+  min-height: 52px;
   line-height: 1.5;
+  word-break: break-word;
   transition: border-color 0.15s ease;
 }
 
