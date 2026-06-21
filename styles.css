@@ -198,7 +198,7 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
 
 /* Flashcard mode */
 .answers.flashcard-mode {
-  overflow: hidden;
+  min-width: 0;
 }
 
 .flashcard {
