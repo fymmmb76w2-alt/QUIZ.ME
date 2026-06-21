@@ -197,13 +197,19 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
 .feedback.bad { border-color: var(--wrong-bg); }
 
 /* Flashcard mode */
+.answers.flashcard-mode {
+  overflow: hidden;
+}
+
 .flashcard {
   margin: 8px 0;
+  min-width: 0;
 }
 
 .flashcard-input {
   display: block;
   width: 100%;
+  max-width: 100%;
   padding: 14px 16px;
   border: 1px solid var(--border);
   background: var(--surface);
