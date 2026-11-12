@@ -88,7 +88,7 @@ while :; do
     cp "$f" "$staged" 2>>"$LOG" || { log "FAILED copy $base"; continue; }
     # shellcheck disable=SC2059
     prompt=$(printf "$PROMPT_TPL" "$staged")
-    answer=$(cd "$STAGE" && "$CLAUDE_BIN" -p "$prompt" --allowedTools Read --add-dir "$STAGE" 2>>"$LOG")
+    answer=$(cd "$STAGE" && "$CLAUDE_BIN" -p "$prompt" --model "${MODEL:-claude-opus-5-5}" --allowedTools Read --add-dir "$STAGE" 2>>"$LOG")
     rc=$?; rm -rf "$STAGE"
     if [ $rc -ne 0 ] || [ -z "${answer//[[:space:]]/}" ] || [ "$(printf '%s' "$answer" | tr -d '[:space:]')" = UNREADABLE ]; then
       log "FAILED $base"; mv "$f" "$FAILED/"; processed=1; continue

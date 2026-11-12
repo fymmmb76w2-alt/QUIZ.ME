@@ -43,6 +43,7 @@ Expected: `processing test.txt`, `done test.txt`, and one iMessage `1 - Paris`.
 | launchd errors | `cat ~/.studying-agent/launchd.err` |
 | Agent state | `launchctl print gui/$(id -u)/com.studying-agent \| grep -E "state\|runs\|last exit"` |
 | Run now | `bash ~/.studying-agent/process.sh` |
+| Change model | add `MODEL=<model-id>` to `~/.studying-agent/config.env` (default `claude-opus-5-5`; reinstall resets it) |
 | Change delay | add `SEND_DELAY=<seconds>` to `~/.studying-agent/config.env` (default 5; reinstall resets it) |
 | Update | `git pull`, then rerun `./install.sh` |
 | Change phone/folder | rerun `./install.sh` with new values |
