@@ -11,8 +11,13 @@ LOCK="$HOME/.studying-agent/lock"
 DONE="$WATCH_DIR/.processed"
 FAILED="$WATCH_DIR/.failed"
 SEND="${SEND_CMD:-osascript $SEND_SCRIPT}"
-mkdir -p "$DONE" "$FAILED" "$(dirname "$LOG")"
+mkdir -p "$(dirname "$LOG")"
 log() { printf '%s %s\n' "$(date '+%F %T')" "$*" >> "$LOG"; }
+# macOS privacy (TCC) blocks launchd-spawned bash from ~/Documents without Full Disk Access
+if ! ls "$WATCH_DIR" >/dev/null 2>>"$LOG"; then
+  log "ERROR cannot read $WATCH_DIR - grant Full Disk Access to /bin/bash"; exit 1
+fi
+mkdir -p "$DONE" "$FAILED" 2>>"$LOG" || { log "ERROR cannot create $DONE - grant Full Disk Access to /bin/bash"; exit 1; }
 
 # single instance
 if ! mkdir "$LOCK" 2>/dev/null; then

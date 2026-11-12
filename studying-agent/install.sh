@@ -29,6 +29,7 @@ cat > "$PLIST" <<P
  <key>ProgramArguments</key><array><string>/bin/bash</string><string>$APP/process.sh</string></array>
  <key>WatchPaths</key><array><string>$WATCH_DIR</string></array>
  <key>RunAtLoad</key><true/>
+ <key>StartInterval</key><integer>60</integer>
  <key>ThrottleInterval</key><integer>10</integer>
  <key>EnvironmentVariables</key><dict><key>PATH</key><string>$(dirname "$CLAUDE_BIN"):/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin</string></dict>
  <key>StandardOutPath</key><string>$APP/launchd.out</string>
