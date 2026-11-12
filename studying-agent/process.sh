@@ -30,11 +30,11 @@ stable() { # file size unchanged for 3s => copy finished
   b=$(stat -f %z "$1" 2>/dev/null || stat -c %s "$1"); [ "$a" = "$b" ]
 }
 
-send() { # one iMessage per non-empty line, 15s apart
+send() { # one iMessage per non-empty line, 5s apart
   local line first=1
   while IFS= read -r line || [ -n "$line" ]; do
     [ -n "${line//[[:space:]]/}" ] || continue
-    [ "$first" = 1 ] || sleep "${SEND_DELAY:-15}"
+    [ "$first" = 1 ] || sleep "${SEND_DELAY:-5}"
     first=0
     $SEND "$line" "$PHONE" >> "$LOG" 2>&1
   done <<< "$1"
