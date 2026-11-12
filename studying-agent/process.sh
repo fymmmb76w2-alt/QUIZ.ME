@@ -1,16 +1,17 @@
 #!/bin/bash
 # Evaluates new files in $WATCH_DIR with Claude and iMessages the answers.
 set -u
-CONF="${STUDY_AGENT_CONF:-$HOME/.studying-agent/config.env}"
+APP_DIR="$(cd "$(dirname "$0")" && pwd)"
+CONF="${STUDY_AGENT_CONF:-$APP_DIR/config.env}"
 # shellcheck disable=SC1090
 source "$CONF"
 : "${WATCH_DIR:?}" "${PHONE:?}" "${CLAUDE_BIN:?}" "${SEND_SCRIPT:?}"
 
-LOG="$HOME/.studying-agent/agent.log"
-LOCK="$HOME/.studying-agent/lock"
+LOG="$APP_DIR/agent.log"
+LOCK="$APP_DIR/lock"
 DONE="$WATCH_DIR/.processed"
 FAILED="$WATCH_DIR/.failed"
-STAGE="$HOME/.studying-agent/stage"
+STAGE="$APP_DIR/stage"
 SEND="${SEND_CMD:-osascript $SEND_SCRIPT}"
 mkdir -p "$(dirname "$LOG")"
 log() { printf '%s %s\n' "$(date '+%F %T')" "$*" >> "$LOG"; }
