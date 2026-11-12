@@ -30,11 +30,11 @@ stable() { # file size unchanged for 3s => copy finished
   b=$(stat -f %z "$1" 2>/dev/null || stat -c %s "$1"); [ "$a" = "$b" ]
 }
 
-send() { # chunk long text, send each part
-  local text="$1" part
-  while IFS= read -r -d $'\x1e' part || [ -n "$part" ]; do
-    [ -n "${part//[[:space:]]/}" ] && $SEND "$part" "$PHONE" >> "$LOG" 2>&1
-  done < <(printf '%s' "$text" | fold -s -w 1500 | awk 'BEGIN{ORS=""} {print $0 "\n"; n+=length($0)+1; if(n>1400){printf "\x1e"; n=0}}')
+send() { # one iMessage per non-empty line
+  local line
+  while IFS= read -r line || [ -n "$line" ]; do
+    [ -n "${line//[[:space:]]/}" ] && $SEND "$line" "$PHONE" >> "$LOG" 2>&1
+  done <<< "$1"
 }
 
 PROMPT_TPL='Read the file at: %s
