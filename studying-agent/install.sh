@@ -2,13 +2,17 @@
 # usage: ./install.sh +420XXXXXXXXX [/path/to/watch/folder]
 set -eu
 [ "$(uname)" = Darwin ] || { echo "macOS required"; exit 1; }
-PHONE="${1:?phone number, e.g. +420602825925}"
-WATCH_DIR="${2:-$HOME/Documents/studying}"
+PHONE="${1:-}"; WATCH_DIR="${2:-}"
+[ -n "$PHONE" ] || read -r -p "iMessage recipient (e.g. +420123456789): " PHONE
+[ -n "$WATCH_DIR" ] || read -r -p "Folder to watch (full path): " WATCH_DIR
+PHONE="${PHONE//[[:space:]]/}"
 HERE="$(cd "$(dirname "$0")" && pwd)"
 APP="$HOME/.studying-agent"
 CLAUDE_BIN="$(command -v claude || true)"
 [ -x "$CLAUDE_BIN" ] || { echo "claude CLI not found in PATH (install Claude Code and log in)"; exit 1; }
 
+echo "Checking Claude CLI..."
+"$CLAUDE_BIN" -p "Reply with the single word: ok" >/dev/null 2>&1 || { echo "claude CLI is installed but not logged in. Run 'claude' once and log in."; exit 1; }
 mkdir -p "$APP" "$WATCH_DIR"
 cp "$HERE/process.sh" "$HERE/send_imessage.applescript" "$APP/"
 chmod +x "$APP/process.sh"
